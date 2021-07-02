@@ -60,7 +60,7 @@ class moderation(commands.Cog):
     async def announce(self, ctx, channel: discord.TextChannel, *, title, message):
         em = discord.Embed(description = f"{message}")
         await channel.send(embed = em)
-    
+   
     @commands.Cog.listener()
     async def on_message(self, message):
         slurs = ["fag","faggot","nigger","nigga"]
