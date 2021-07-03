@@ -67,8 +67,8 @@ class moderation(commands.Cog):
         msg = message.content
         if any(word in msg.lower() for word in slurs):
             await message.delete()
-            await message.channel.send(f"{message.author.mention}, you can not say that.")
-    
+            await message.channel.send(f"{message.author.mention}, you can't say that.")
+
     #@commands.command()
     #async def mute(self, ctx, member: discord.Member, *, reason = None):
     #    text_channel_list = []
