@@ -58,11 +58,11 @@ class status(commands.Cog):
         em.add_field(name="**Latency**", value = f"{mc_latency}")
         em.add_field(name="**IP**", value = "158.62.204.28")
         mc_query = mc_server.query() 
-        #mc_players = '\n'.join(mc_query.players.names)
-        #em.add_field(name="**Online Players:**", value = "{0}".format("\n".join(mc_query.players.names)))
+        mc_players = '\n'.join(mc_query.players.names)
+        em.add_field(name="**Online Players:**", value = "{0}".format("\n".join(mc_query.players.names)))
         time_now = datetime.now()
         time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
-        em.set_footer(text=f"Last Updated:{time_formatted}")
+        em.set_footer(text=f"Last Updated: {time_formatted}")
         await ctx.send(embed = em)
 
 def setup(client):
