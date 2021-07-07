@@ -1,7 +1,9 @@
 import discord, re, random, hashlib, time
 from discord.ext import commands
 ecolor = 0xe91e63
-random.seed()
+
+t = int(time.time() * 1000.0)
+random.seed(((t & 0xff000000) >> 24) + ((t & 0x00ff0000) >> 8) + ((t & 0x0000ff00) << 8) + ((t & 0x000000ff) << 24))
 
 def strip_global_mentions(message, ctx=None):
     #if ctx:
@@ -29,7 +31,7 @@ class fun(commands.Cog):
 
     @commands.command()
     async def rolldice(self, ctx):
-        await ctx.send("You rolled a {}!".format(random.randint(1, 6)))
+        await ctx.send("``You rolled a {}!``".format(random.randint(1, 6)))
 
     @commands.command()
     async def md5(self, ctx, *, msg:str):
@@ -57,7 +59,8 @@ class fun(commands.Cog):
 
     @commands.command()
     async def reverse(self, ctx, *, msg:str):
-        await ctx.send(strip_global_mentions(msg[::-1], ctx))
+        await ctx.send("`{}`".format(strip_global_mentions(msg[::-1], ctx)))
+        #await ctx.send(strip_global_mentions(msg[::-1], ctx))
     
     @commands.command(aliases=["flip", "coin","cf"])
     async def coinflip(self, ctx):
@@ -89,9 +92,25 @@ class fun(commands.Cog):
 
     @commands.command()
     async def penis(self, ctx, user: discord.Member):
-        random.seed(user.id)
-        penis = "8" + "=" * random.randint(0,30) + "D"
+        #random.seed(user.id)
+        randShaft = random.randint(0,30)
+        penis = "8" + "=" * randShaft + "D"
         em = discord.Embed(title  = f"{user.display_name}'s Penis size:", description = f"{penis}", color=ecolor)
+        if (randShaft == 30):
+            em.set_footer(text="Your penis size is massive!")
+        if (randShaft < 30 and  randShaft >= 25):
+            em.set_footer(text="Your penis size is big!")
+        if (randShaft <= 25 and randShaft > 15):
+            em.set_footer(text="Your penis size is above average!")
+        if (randShaft == 15):
+            em.set_footer(text="Your penis size is average!")
+        if (randShaft < 15 and randShaft >= 5):
+            em.set_footer(text="Your penis size is below average!")
+        if (randShaft <= 5 and randShaft > 0):
+            em.set_footer(text="Your penis size is small!")
+        if (randShaft == 0):
+            em.set_footer(text="I didn't even know a penis that small was possible")
+
         await ctx.send(embed = em)
 
    # @commands.command()
