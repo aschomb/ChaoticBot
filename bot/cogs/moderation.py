@@ -1,4 +1,4 @@
-import discord
+import discord, re
 from discord.ext import commands
 from dpytools.checks import *
 ecolor = 0xe91e63
@@ -39,16 +39,6 @@ class moderation(commands.Cog):
             #em.add_field(name="**ID**", value=str(ban[1].id), inline=True)
             await ctx.send("User: " + ban[1].name + '#' + ban[1].discriminator + '\nID: ' + str(ban[1].id) + '\nReason: ' + ban.reason)
         #await ctx.send(embed = em)    
-
-    @commands.command()
-    async def banEntry(self, ctx, *, member):
-        #await ctx.send(member)
-        banned_users = await ctx.guild.bans()
-        for ban_entry in banned_users:
-            user = ban_entry.user
-            #member_name, member_disc = member.split('#')
-            #await ctx.send(member_name + '#' + member_disc)
-            await ctx.send(user)
 
     @commands.has_permissions(ban_members=True)
     @commands.is_owner()
@@ -100,17 +90,21 @@ class moderation(commands.Cog):
    
     @commands.Cog.listener()
     async def on_message(self, message):
-        slurs = ["fag","faggot","nigger","nigga"]
+        slurs = ("fag","faggot","nigger","nigga")
         msg = message.content
+        msg = msg.lower()
         user = message.author
-        if any(word in msg.lower() for word in slurs):
-            await message.delete()
-            em = discord.Embed(title="Message deleted",color=ecolor)
-            em.add_field(name="**Warning**",value=f"You can't say that word",inline=True)
-            em.add_field(name="**Message Content**",value=f"{message.content}", inline=True)
-            #em.add_field(name="**Disclaimer**",value="You may not have intended for your message to contain a slur, if this was a mistake, ignore it.", inline=True)
-            em.set_footer(text="Disclaimer: not every deleted message purposely contained a slur, the bot just happened to pick it up.  If that is the case, just ignore this.")
-            await user.send(embed=em)
+        #if any(word in msg.lower() for word in slurs):
+        pattern = re.compile(r'{}'.format(msg))
+        for word in slurs:
+            if re.search(pattern, word):
+                await message.delete()
+                em = discord.Embed(title="Message deleted",color=ecolor)
+                em.add_field(name="**Warning**",value=f"You can't say that word",inline=True)
+                em.add_field(name="**Message Content**",value=f"{message.content}", inline=True)
+                #em.add_field(name="**Disclaimer**",value="You may not have intended for your message to contain a slur, if this was a mistake, ignore it.", inline=True)
+                em.set_footer(text="Disclaimer: Not every deleted message purposely contained a slur, the bot just happened to pick it up.  If that is the case, just ignore this.")
+                await user.send(embed=em)
             #await user.send(f"{message.author.mention}, you can't say that.{message.content}")
             #await user.send(f"{message.content}")
             #await message.channel.send(f"{message.author.mention}, you can't say that.")
