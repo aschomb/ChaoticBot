@@ -90,14 +90,16 @@ class moderation(commands.Cog):
    
     @commands.Cog.listener()
     async def on_message(self, message):
-        slurs = ("fag","faggot","nigger","nigga")
+        slurs = ["fag","faggot","nigger","nigga"]
         msg = message.content
         msg = msg.lower()
         user = message.author
         #if any(word in msg.lower() for word in slurs):
         pattern = re.compile(r'{}'.format(msg))
+        #if ((msg.startswith("$reload") == False) or (msg.startswith("$unload") == False) or (msg.startswith("$load") == False) or (msg.startswith("$reloadall") == False) and (message.author.id != 290926756397842432)):
+        #if (user.id != 290926756397842432):
         for word in slurs:
-            if re.search(pattern, word):
+            if re.fullmatch(pattern, word):
                 await message.delete()
                 em = discord.Embed(title="Message deleted",color=ecolor)
                 em.add_field(name="**Warning**",value=f"You can't say that word",inline=True)

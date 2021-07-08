@@ -1,5 +1,6 @@
 import discord
 from datetime import datetime
+import valve.source
 from valve.source.a2s import ServerQuerier
 from discord.ext import commands
 from mcstatus import MinecraftServer
@@ -14,18 +15,23 @@ class status(commands.Cog):
     
     @commands.command(aliases=['statusTTT','tttstatus','TTTstatus'])
     async def statusttt(self, ctx):
-        with ServerQuerier(ttt_server) as server:
-            ttt_info = server.info()
-            ttt_players = server.players()
-            players = []
-            #for player in sorted(ttt_players["players"], key=lambda p: p["duration"], reverse=True):
-            #    players.append(player)
-            for player in server.players()["players"]:
-                players.append(player["name"])
-            player_count = len(players)
-            ttt_map = server.info()["map"]
-            max_players = server.info()["max_players"]
-            #print(players)
+        try:
+            with ServerQuerier(ttt_server) as server:
+                ttt_info = server.info()
+                ttt_players = server.players()
+                players = []
+                #for player in sorted(ttt_players["players"], key=lambda p: p["duration"], reverse=True):
+                #    players.append(player)
+                for player in server.players()["players"]:
+                    players.append(player["name"])
+                player_count = len(players)
+                ttt_map = server.info()["map"]
+                max_players = server.info()["max_players"]
+                #print(players)
+        
+        except valve.source.NoResponseError:
+            await ctx.send(f"``Server {ttt_server[0]}:{ttt_server[1]} timed out!  No Response.``")
+            return 0 
 
         em = discord.Embed(title="**{server_name}**".format(**ttt_info), color = ecolor)
         em.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
@@ -57,9 +63,12 @@ class status(commands.Cog):
         mc_latency = mc_status.latency
         em.add_field(name="**Latency**", value = f"{mc_latency}")
         em.add_field(name="**IP**", value = "158.62.204.28")
-        mc_query = mc_server.query() 
-        mc_players = '\n'.join(mc_query.players.names)
-        em.add_field(name="**Online Players:**", value = "{0}".format("\n".join(mc_query.players.names)))
+        if mc_player_count == 0:
+            em.add_field(name="**Online Players:**", value ="No one is online")
+        if mc_player_count > 0:
+            mc_query = mc_server.query() 
+            mc_players = '\n'.join(mc_query.players.names)
+            em.add_field(name="**Online Players:**", value = "{0}".format("\n".join(mc_query.players.names)))
         time_now = datetime.now()
         time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
         em.set_footer(text=f"Last Updated: {time_formatted}")
