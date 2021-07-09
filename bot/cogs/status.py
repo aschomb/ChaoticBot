@@ -23,7 +23,7 @@ class status(commands.Cog):
                 #for player in sorted(ttt_players["players"], key=lambda p: p["duration"], reverse=True):
                 #    players.append(player)
                 for player in server.players()["players"]:
-                    players.append(player["name"])
+                    players.append("__" + player["name"]+ "__")
                 player_count = len(players)
                 ttt_map = server.info()["map"]
                 max_players = server.info()["max_players"]
@@ -38,7 +38,7 @@ class status(commands.Cog):
         #ttt_map = ttt_server.info()["map"]
         em.add_field(name="**Map**", value=f"{ttt_map}", inline=True)
         em.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
-        em.add_field(name="**Connect**", value="[[Connect]]", inline=True)
+        em.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/syw85zst)", inline=True)
         if (player_count == 0):
             em.add_field(name="**Online Players**", value="No one is online", inline=True)
         
@@ -67,8 +67,8 @@ class status(commands.Cog):
             em.add_field(name="**Online Players:**", value ="No one is online")
         if mc_player_count > 0:
             mc_query = mc_server.query() 
-            mc_players = '\n'.join(mc_query.players.names)
-            em.add_field(name="**Online Players:**", value = "{0}".format("\n".join(mc_query.players.names)))
+            #mc_players = '\n'.join(mc_query.players.names)
+            em.add_field(name="**Online Players:**", value = "__{0}__".format("\n".join(mc_query.players.names)))
         time_now = datetime.now()
         time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
         em.set_footer(text=f"Last Updated: {time_formatted}")
