@@ -40,7 +40,7 @@ class status(commands.Cog):
         em.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
         em.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/syw85zst)", inline=True)
         if (player_count == 0):
-            em.add_field(name="**Online Players**", value="No one is online", inline=True)
+            em.add_field(name="**Online Players**", value="No one is online.", inline=True)
         
         if (player_count > 0):
             playerString = '\n'.join(players)
@@ -64,7 +64,7 @@ class status(commands.Cog):
         em.add_field(name="**Latency**", value = f"{mc_latency}")
         em.add_field(name="**IP**", value = "158.62.204.28")
         if mc_player_count == 0:
-            em.add_field(name="**Online Players:**", value ="No one is online")
+            em.add_field(name="**Online Players:**", value ="No one is online.")
         if mc_player_count > 0:
             mc_query = mc_server.query() 
             #mc_players = '\n'.join(mc_query.players.names)
