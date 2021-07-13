@@ -96,7 +96,7 @@ class tools(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, this command is still on cooldown!")
             time = error.retry_after
             await ctx.send('Try again in {:.2f} hours or {:.2f} minutes!'.format(time/3600, time/60))
-    
+
     #@commands.command()
     #async def testCoolDown(self, ctx, time):
     #    cooldown = time

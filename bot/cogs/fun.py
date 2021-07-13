@@ -21,8 +21,9 @@ class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # the bot repeats whatever string is entered by the user
     @commands.command()
-    async def say(self, ctx, *, message : str):
+    async def say(self, ctx, *, message: str):
         try:
             await ctx.message.delete()
         except:
@@ -30,9 +31,10 @@ class fun(commands.Cog):
         await ctx.send(strip_global_mentions(message,ctx))
 
     @commands.command()
-    async def rolldice(self, ctx):
-        await ctx.send("``You rolled a {}!``".format(random.randint(1, 6)))
-
+    async def reverse(self, ctx, *, msg: str):
+        await ctx.send("`{}`".format(strip_global_mentions(msg[::-1], ctx)))
+   
+    # ----- Encryption Commands -----
     @commands.command()
     async def md5(self, ctx, *, msg:str):
         await ctx.send("`{}`".format(hashlib.md5(bytes(msg.encode("utf-8"))).hexdigest()))
@@ -56,12 +58,13 @@ class fun(commands.Cog):
     @commands.command()
     async def sha512(self, ctx, *, msg:str):
         await ctx.send("`{}`".format(hashlib.sha512(bytes(msg.encode("utf-8"))).hexdigest()))
-
-    @commands.command()
-    async def reverse(self, ctx, *, msg:str):
-        await ctx.send("`{}`".format(strip_global_mentions(msg[::-1], ctx)))
-        #await ctx.send(strip_global_mentions(msg[::-1], ctx))
+    # ------------------------------
     
+    # ----- Gambling Commands -----
+    @commands.command()
+    async def rolldice(self, ctx):
+        await ctx.send("``You rolled a {}!``".format(random.randint(1,6)))
+
     @commands.command(aliases=["flip", "coin","cf"])
     async def coinflip(self, ctx):
         coinsides = ["Heads", "Tails"]
@@ -83,7 +86,9 @@ class fun(commands.Cog):
             await ctx.send(f"{slotmachine} 2 in a row, you won! 🎉")
         else:
             await ctx.send(f"{slotmachine} No match, you lost 😢")
+    # -----------------------------
 
+    # ----- Random -----
     @commands.command()
     async def piss(self, ctx):
         await ctx.send("Shit?")
@@ -96,6 +101,7 @@ class fun(commands.Cog):
         randShaft = random.randint(0,30)
         penis = "8" + "=" * randShaft + "D"
         em = discord.Embed(title  = f"{user.display_name}'s Penis size:", description = f"{penis}", color=ecolor)
+        
         if (randShaft == 30):
             em.set_footer(text="Your penis size is massive!")
         if (randShaft < 30 and  randShaft >= 25):
@@ -112,9 +118,7 @@ class fun(commands.Cog):
             em.set_footer(text="I didn't even know a penis that small was possible")
 
         await ctx.send(embed = em)
-
-   # @commands.command()
-   # async def tictactoe(self, ctx
+    # ------------------
 
 def setup(client):
     client.add_cog(fun(client))

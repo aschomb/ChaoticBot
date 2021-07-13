@@ -1,26 +1,34 @@
 import discord
 import aiohttp
 import random
+import time
 #import sys
 import os
 from discord.ext import commands
 
+# embed color
+ecolor = 0xe91e63
+
+# more random, random seed
+t = int(time.time() * 1000.0)
+random.seed(((t & 0xff000000) >> 24) + ((t & 0x00ff0000) >>  8) + ((t & 0x0000ff00) <<  8) + ((t & 0x000000ff) << 24))
+
 #sys.path.append('/root/ChaoticBot/bot/cogs')
 #import exceptions
-
-ecolor = 0xe91e63
-random.seed()
 
 class animals(commands.Cog):
     
     def __init__(self, client):
         self.client = client
-
+    
+    # one command for all of the animals, can be used 2 times ever 2 seconds
     @commands.cooldown(2.0,2.0,commands.BucketType.user)
     @commands.command()
     async def animal(self, ctx, *, an):
         animals = ["cat","dog","lizard","duck","fox","panda","redpanda","red panda","bird","birb","kangaroo","frog","raccoon","rabbit","bunny"]        
         async with aiohttp.ClientSession() as req:
+        
+        # ----- API Animals -----
             if (an.lower() == "cat"):
                 async with req.get('https://some-random-api.ml/img/cat') as cat:
                     cat = await cat.json()
@@ -83,7 +91,10 @@ class animals(commands.Cog):
                     await req.close()
                     em = discord.Embed(title=f"Bird reqested by {ctx.author.display_name}:", color=ecolor)
                     await ctx.send(embed = em.set_image(url=birb['link']))
+            # ----------------------
 
+                
+            # ----- File Animals -----
             if (an.lower() == "kangaroo"):
                 await req.close()
                 image = os.listdir('/root/ChaoticBot/bot/images/kangaroo/')
@@ -91,10 +102,7 @@ class animals(commands.Cog):
                 kangarooImg = discord.File("/root/ChaoticBot/bot/images/kangaroo/" + random_image, filename="kangImg.jpg")
                 em = discord.Embed(title=f"Kangaroo requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://kangImg.jpg")
-                #await ctx.send(f"Kangaroo requested by {ctx.author.display_name}:")
-                #await ctx.send(file=kangarooImg)
                 await ctx.send(file = kangarooImg, embed=em)
-
 
             if (an.lower() == "frog"):
                 await req.close()
@@ -103,8 +111,6 @@ class animals(commands.Cog):
                 frogImg = discord.File("/root/ChaoticBot/bot/images/frogs/"  + random_image, filename="frImg.jpg")
                 em = discord.Embed(title=f"Frog requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://frImg.jpg")
-                #await ctx.send(f"Frog requested by {ctx.author.display_name}:")
-                #await ctx.send(file=frogImg)
                 await ctx.send(file = frogImg, embed=em)
 
             if (an.lower() == "raccoon"):
@@ -114,8 +120,6 @@ class animals(commands.Cog):
                 raccoonImg = discord.File("/root/ChaoticBot/bot/images/raccoons/" + random_image, filename="raccImg.jpg")
                 em = discord.Embed(title=f"Raccoon requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://raccImg.jpg")
-                #await ctx.send(f"Raccoon requested by {ctx.author.display_name}:")
-                #await ctx.send(file=raccoonImg)
                 await ctx.send(file = raccoonImg, embed=em)
 
             if ((an.lower() == "rabbit") or (an.lower() == "bunny")):
@@ -130,8 +134,6 @@ class animals(commands.Cog):
                 random_image = random.choice(image)
                 rabbitImg = discord.File("/root/ChaoticBot/bot/images/rabbits/" + random_image, filename="rabbImg.jpg")
                 em.set_image(url="attachment://rabbImg.jpg")
-                #await ctx.send(f"{aname} requested by {ctx.author.display_name}:")
-                #await ctx.send(file=rabbitImg)
                 await ctx.send(file = rabbitImg, embed=em)
 
             if (an.lower() == "penguin"):
@@ -141,8 +143,6 @@ class animals(commands.Cog):
                 penguinImg = discord.File("/root/ChaoticBot/bot/images/penguins/" + random_image, filename="penImg.jpg")
                 em = discord.Embed(title=f"Penguin requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://penImg.jpg")
-                #await ctx.send(f"Penguin requested by {ctx.author.display_name}:")
-                #await ctx.send(file=penguinImg)
                 await ctx.send(file = penguinImg, embed=em)
 
             if (an.lower() == "axolotl"):
@@ -152,9 +152,8 @@ class animals(commands.Cog):
                 axolotlImg = discord.File("/root/ChaoticBot/bot/images/axolotl/" + random_image, filename="axImg.jpg")
                 em = discord.Embed(title=f"Axolotl requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://axImg.jpg")
-                #await ctx.send(f"Axolotl requested by {ctx.author.display_name}:")
-                #await ctx.send(file=axolotlImg)
                 await ctx.send(file = axolotlImg, embed=em)
+            # -----------------------
 
     @animal.error
     async def animal_error(self, ctx, error):
