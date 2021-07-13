@@ -1,9 +1,12 @@
-import discord, os
+import discord
 from discord.ext import commands
 from dpytools.checks import *
 
 client = commands.Bot(command_prefix = "$")
 client.remove_command("help")
+
+cogs_load = ['animals.py','fun.py','help.py','moderation.py','status.py','tools.py']
+#cogs_no_load = {'exceptions.py'}
 
 @client.command()
 @only_these_users(736309573924683917,290926756397842432)
@@ -36,34 +39,26 @@ async def reload(ctx, extension):
 @client.command()
 @only_these_users(736309573924683917,290926756397842432)
 async def reloadall(ctx):
-  cog_list = []
   try:
-    for filename in os.listdir('./cogs'):
-      if filename.endswith('.py'):
+    for filename in cogs_load:
         client.unload_extension(f'cogs.{filename[:-3]}')
-    for filename in os.listdir('./cogs'):
-      if filename.endswith('.py'):
+    
+    for filename in cogs_load:
         client.load_extension(f'cogs.{filename[:-3]}')
-        cog_list.append(filename[:-3])
-    em = discord.Embed(title="**Cogs:**", description = f"{cog_list}")
+    
+    em = discord.Embed(title="**Cogs:**", description = f"{cogs_load}")
     await ctx.send("All cogs have been reloaded.\n")
     await ctx.send(embed = em)
-    # await ctx.send(f"All cogs have been reloaded:\n{cog_list}.")
   except:
-    await ctx.send(f"Error reloading all cogs, or you may not have permission to reload all cogs.")
-
-#@client.event
-#async def on_message(message):
-#  if (('fuck you' or 'Fuck you' or 'fuck You' or 'Fuck You') in message.content):
-#    await message.channel.send("No, fuck you.")
+      await ctx.send(f"Error reloading all cogs, or you may not have permission to reload all cogs.")
 
 @client.event
 async def on_ready():
   await client.change_presence(activity=discord.Game(name="$help to see menu"))
   print(f"Logged in as {client.user}")
 
-for filename in os.listdir('./cogs'):
-  if filename.endswith('.py'):
+
+for filename in cogs_load:
     client.load_extension(f'cogs.{filename[:-3]}')
 
 with open('/root/ChaoticBot/token.txt') as f:

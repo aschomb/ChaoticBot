@@ -88,57 +88,28 @@ class moderation(commands.Cog):
         em = discord.Embed(description = f"{message}")
         await channel.send(embed = em)
    
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        slurs = ["fag","faggot","nigger","nigga"]
-        msg = message.content
-        msg = msg.lower()
-        user = message.author
-        #if any(word in msg.lower() for word in slurs):
-        pattern = re.compile(r'{}'.format(msg))
-        #if ((msg.startswith("$reload") == False) or (msg.startswith("$unload") == False) or (msg.startswith("$load") == False) or (msg.startswith("$reloadall") == False) and (message.author.id != 290926756397842432)):
-        #if (user.id != 290926756397842432):
-        for word in slurs:
-            if re.fullmatch(pattern, word):
-                await message.delete()
-                em = discord.Embed(title="Message deleted",color=ecolor)
-                em.add_field(name="**Warning**",value=f"You can't say that word",inline=True)
-                em.add_field(name="**Message Content**",value=f"{message.content}", inline=True)
-                #em.add_field(name="**Disclaimer**",value="You may not have intended for your message to contain a slur, if this was a mistake, ignore it.", inline=True)
-                em.set_footer(text="Disclaimer: Not every deleted message purposely contained a slur, the bot just happened to pick it up.  If that is the case, just ignore this.")
-                await user.send(embed=em)
-            #await user.send(f"{message.author.mention}, you can't say that.{message.content}")
-            #await user.send(f"{message.content}")
-            #await message.channel.send(f"{message.author.mention}, you can't say that.")
-
-    #@commands.command()
-    #async def mute(self, ctx, member: discord.Member, *, reason = None):
-    #    text_channel_list = []
-    #    for guild in client.guilds:
-    #        for channel in guild.text_channels:
-    #@commands.command()
-    #async def mute(self, ctx, member: discord.Member, *, reason = None):
-    #    text_channel_list = []
-    #    for guild in client.guilds:
-    #        for channel in guild.text_channels:
-    #            text_channel_list.append(channel)
-    #    
-    #    for channel in text_channel_list:
-    #        await ctx.channel.set_permissions(member, send_messages=False)
-    #
-    #    mute = discord.Embed(title=f"Muted {member.display_name}!", description = f"Reason: {reason}\nBy: {ctx.author.mention}")
-    #    await ctx.channel.send(embed=mute)
-    
-    #@commands.command()
-    #async def unnmute(self, ctx, member: discord.Member):
-    #    text_channel_list = []
-    #    for guild in client.guilds:
-    #        for channel in guild.text_channels:
-    #            text_channel_list.append(channel)
-    #    
-    #    for channel in text_channel_list:
-    #        await ctx.channel.set_permissions(member, send_messages=True)
-    #
+    #@commands.Cog.listener()
+    #async def on_message(self, message):
+        #slurs = ["fag","faggot","nigger","nigga"]
+        #msg = message.content
+        #msg = msg.lower()
+        #user = message.author
+        ##if any(word in msg.lower() for word in slurs):
+        #pattern = re.compile(r'{}'.format(msg))
+        ##if ((msg.startswith("$reload") == False) or (msg.startswith("$unload") == False) or (msg.startswith("$load") == False) or (msg.startswith("$reloadall") == False) and (message.author.id != 290926756397842432)):
+        ##if (user.id != 290926756397842432):
+        #for word in slurs:
+            #if re.fullmatch(pattern, word):
+                #await message.delete()
+                #em = discord.Embed(title="Message deleted",color=ecolor)
+                #em.add_field(name="**Warning**",value=f"You can't say that word",inline=True)
+                #em.add_field(name="**Message Content**",value=f"{message.content}", inline=True)
+                ##em.add_field(name="**Disclaimer**",value="You may not have intended for your message to contain a slur, if this was a mistake, ignore it.", inline=True)
+                #em.set_footer(text="Disclaimer: Not every deleted message purposely contained a slur, the bot just happened to pick it up.  If that is the case, just ignore this.")
+                #await user.send(embed=em)
+            ##await user.send(f"{message.author.mention}, you can't say that.{message.content}")
+            ##await user.send(f"{message.content}")
+            ##await message.channel.send(f"{message.author.mention}, you can't say that.")
 
 def setup(client):
     client.add_cog(moderation(client))

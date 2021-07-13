@@ -1,5 +1,13 @@
-import discord, aiohttp, random, os
+import discord
+import aiohttp
+import random
+#import sys
+import os
 from discord.ext import commands
+
+#sys.path.append('/root/ChaoticBot/bot/cogs')
+#import exceptions
+
 ecolor = 0xe91e63
 random.seed()
 
@@ -11,6 +19,7 @@ class animals(commands.Cog):
     @commands.cooldown(2.0,2.0,commands.BucketType.user)
     @commands.command()
     async def animal(self, ctx, *, an):
+        animals = ["cat","dog","lizard","duck","fox","panda","redpanda","red panda","bird","birb","kangaroo","frog","raccoon","rabbit","bunny"]        
         async with aiohttp.ClientSession() as req:
             if (an.lower() == "cat"):
                 async with req.get('https://some-random-api.ml/img/cat') as cat:
@@ -77,9 +86,9 @@ class animals(commands.Cog):
 
             if (an.lower() == "kangaroo"):
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/kangaroo/')
+                image = os.listdir('/root/ChaoticBot/bot/images/kangaroo/')
                 random_image = random.choice(image)
-                kangarooImg = discord.File("/root/ChaoticBot/bot/cogs/kangaroo/" + random_image, filename="kangImg.jpg")
+                kangarooImg = discord.File("/root/ChaoticBot/bot/images/kangaroo/" + random_image, filename="kangImg.jpg")
                 em = discord.Embed(title=f"Kangaroo requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://kangImg.jpg")
                 #await ctx.send(f"Kangaroo requested by {ctx.author.display_name}:")
@@ -89,9 +98,9 @@ class animals(commands.Cog):
 
             if (an.lower() == "frog"):
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/frogs/')
+                image = os.listdir('/root/ChaoticBot/bot/images/frogs/')
                 random_image = random.choice(image)
-                frogImg = discord.File("/root/ChaoticBot/bot/cogs/frogs/"  + random_image, filename="frImg.jpg")
+                frogImg = discord.File("/root/ChaoticBot/bot/images/frogs/"  + random_image, filename="frImg.jpg")
                 em = discord.Embed(title=f"Frog requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://frImg.jpg")
                 #await ctx.send(f"Frog requested by {ctx.author.display_name}:")
@@ -100,9 +109,9 @@ class animals(commands.Cog):
 
             if (an.lower() == "raccoon"):
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/raccoons')
+                image = os.listdir('/root/ChaoticBot/bot/images/raccoons')
                 random_image = random.choice(image)
-                raccoonImg = discord.File("/root/ChaoticBot/bot/cogs/raccoons/" + random_image, filename="raccImg.jpg")
+                raccoonImg = discord.File("/root/ChaoticBot/bot/images/raccoons/" + random_image, filename="raccImg.jpg")
                 em = discord.Embed(title=f"Raccoon requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://raccImg.jpg")
                 #await ctx.send(f"Raccoon requested by {ctx.author.display_name}:")
@@ -117,9 +126,9 @@ class animals(commands.Cog):
                     aname = "Bunny"
                     em = discord.Embed(title=f"Bunny requested by {ctx.author.display_name}:", color=ecolor)
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/rabbits/')
+                image = os.listdir('/root/ChaoticBot/bot/images/rabbits/')
                 random_image = random.choice(image)
-                rabbitImg = discord.File("/root/ChaoticBot/bot/cogs/rabbits/" + random_image, filename="rabbImg.jpg")
+                rabbitImg = discord.File("/root/ChaoticBot/bot/images/rabbits/" + random_image, filename="rabbImg.jpg")
                 em.set_image(url="attachment://rabbImg.jpg")
                 #await ctx.send(f"{aname} requested by {ctx.author.display_name}:")
                 #await ctx.send(file=rabbitImg)
@@ -127,9 +136,9 @@ class animals(commands.Cog):
 
             if (an.lower() == "penguin"):
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/penguins')
+                image = os.listdir('/root/ChaoticBot/bot/images/penguins')
                 random_image = random.choice(image)
-                penguinImg = discord.File("/root/ChaoticBot/bot/cogs/penguins/" + random_image, filename="penImg.jpg")
+                penguinImg = discord.File("/root/ChaoticBot/bot/images/penguins/" + random_image, filename="penImg.jpg")
                 em = discord.Embed(title=f"Penguin requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://penImg.jpg")
                 #await ctx.send(f"Penguin requested by {ctx.author.display_name}:")
@@ -138,9 +147,9 @@ class animals(commands.Cog):
 
             if (an.lower() == "axolotl"):
                 await req.close()
-                image = os.listdir('/root/ChaoticBot/bot/cogs/axolotl')
+                image = os.listdir('/root/ChaoticBot/bot/images/axolotl')
                 random_image = random.choice(image)
-                axolotlImg = discord.File("/root/ChaoticBot/bot/cogs/axolotl/" + random_image, filename="axImg.jpg")
+                axolotlImg = discord.File("/root/ChaoticBot/bot/images/axolotl/" + random_image, filename="axImg.jpg")
                 em = discord.Embed(title=f"Axolotl requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://axImg.jpg")
                 #await ctx.send(f"Axolotl requested by {ctx.author.display_name}:")
