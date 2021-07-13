@@ -7,14 +7,17 @@ from discord.utils import get
 
 ecolor = 0xe91e63
 
+# initializes the 3 timer variables to floats
 popTimer: float
 gameTimer: float
 movieTimer: float
 
+# initially opens and reads json file for timers
 with open("/root/ChaoticBot/bot/timers.json", 'r', encoding='utf-8') as data:
     timers_json = json.load(data)
     data.close()
 
+# used for resyncing timer variables with what is in the json file
 def getTimers():
     for var in timers_json["Timers"][0]["times"]:
         if var["name"] == "populate":
@@ -26,13 +29,18 @@ def getTimers():
         if var["name"] == "movienight":
             global movieTimer
             movieTimer = var["time"]
+
+# for resyncing the variables on start
 getTimers()
 
+# modifying method for setting variables in code and in the json file
 def setTimer(role, time):
+    # reads current json data
     with open("/root/ChaoticBot/bot/timers.json", 'r', encoding='utf-8') as data:
         data_json = json.load(data)
         data.close()
-
+    
+    # sets input timer in the json file to the input time
     for var in data_json["Timers"][0]["times"]:
         if role == "populate":
             if var["name"] == "populate":
@@ -47,17 +55,21 @@ def setTimer(role, time):
                 var["time"] = time
                 break
 
+    # writes times to json
     with open("/root/ChaoticBot/bot/timers.json","w", encoding='utf-8') as data_file:
         json.dump(data_json, data_file)
         data_file.close()
     
+    # syncs variables to json timers
     getTimers()
+
 
 class tools(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-
+    
+    # testing the bot's latency ontop of the Discord API
     @commands.command()
     async def ping(self, ctx):
         time1 = time.perf_counter()
@@ -66,6 +78,7 @@ class tools(commands.Cog):
         ping = round((time2-time1)*1000)
         await ctx.send(f"Ping - {ping}")
 
+    # for setting cooldowns on the role ping commands (the next 6, ping command paired with it's error)
     @commands.command()
     async def setCD(self, ctx, role: str, time: float):
         if role == "populate" or "gamenight" or "movienight":
@@ -132,6 +145,8 @@ class tools(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, this command is still on cooldown!")
             time = error.retry_after
             await ctx.send('Try again in {:.2f} hours or {:.2f} minutes!'.format(time/3600, time/60))
+
+    # test commands
 
     #@commands.command()
     #async def testCoolDown(self, ctx, time):

@@ -155,12 +155,15 @@ class animals(commands.Cog):
                 await ctx.send(file = axolotlImg, embed=em)
             # -----------------------
 
+    # Cooldown error
     @animal.error
     async def animal_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(ctx.author.mention)
             em = discord.Embed(title=f"Command is on cooldown", description=f"Try again in {error.retry_after:.2f}s")
             await ctx.send(embed=em)
+
+    # add error for invalid animal
 
 def setup(client):
     client.add_cog(animals(client))

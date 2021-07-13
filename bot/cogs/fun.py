@@ -1,5 +1,10 @@
-import discord, re, random, hashlib, time
+import discord
+import hashlib
+import random
+import time
+import re
 from discord.ext import commands
+
 ecolor = 0xe91e63
 
 t = int(time.time() * 1000.0)

@@ -1,6 +1,9 @@
-import discord, re
+import discord
+import re
+
 from discord.ext import commands
 from dpytools.checks import *
+
 ecolor = 0xe91e63
 
 class moderation(commands.Cog):
@@ -18,6 +21,7 @@ class moderation(commands.Cog):
         await ctx.send(embed = em)
         await member.send(embed = em)
     
+    # ----- Ban related -----
     @commands.has_permissions(ban_members=True)
     @commands.is_owner()
     @commands.command()
@@ -55,7 +59,9 @@ class moderation(commands.Cog):
                 await member.send(f"{member.mention}, you have been unbanned by {ctx.author.display_name}")
                 return
         await ctx.send("User was not banned/found.")
+    # -----------------------
 
+    # ----- Role related -----
     @commands.command()
     @commands.is_owner()
     @only_these_users(736309573924683917,290926756397842432)
@@ -75,6 +81,7 @@ class moderation(commands.Cog):
             await ctx.send(f"Role {role} has been removed from {member.display_name}.")
         except:
             await ctx.send("Error removing role.")
+    # ------------------------
 
     @commands.command()
     @only_these_users(736309573924683917,290926756397842432)
