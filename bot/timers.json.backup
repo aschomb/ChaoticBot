@@ -1,0 +1,21 @@
+{
+	"Timers":
+	[
+		{
+			"times": [
+			{
+				"name": "populate",
+				"time": 0.0
+			},
+			{
+				"name": "gamenight",
+				"time": 0.0
+			},
+			{
+				"name": "movienight",
+				"time": 0.0
+			}
+			]
+		}
+	]
+}

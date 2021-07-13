@@ -15,19 +15,23 @@ class status(commands.Cog):
     
     @commands.command(aliases=['statusTTT','tttstatus','TTTstatus'])
     async def statusttt(self, ctx):
+        # Queries the TTT server based on its IP and port
         try:
             with ServerQuerier(ttt_server) as server:
                 ttt_info = server.info()
+                
                 ttt_players = server.players()
+                
                 players = []
-                #for player in sorted(ttt_players["players"], key=lambda p: p["duration"], reverse=True):
-                #    players.append(player)
+                
                 for player in server.players()["players"]:
                     players.append("__" + player["name"]+ "__")
+                
                 player_count = len(players)
+                
                 ttt_map = server.info()["map"]
+                
                 max_players = server.info()["max_players"]
-                #print(players)
         
         except valve.source.NoResponseError:
             await ctx.send(f"``Server {ttt_server[0]}:{ttt_server[1]} timed out!  No Response.``")
