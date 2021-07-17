@@ -4,6 +4,7 @@ import valve.source
 from valve.source.a2s import ServerQuerier
 from discord.ext import commands, tasks
 from mcstatus import MinecraftServer
+from dpytools.checks import *
 ttt_server = ("208.103.169.70", 27021)
 mc_server = MinecraftServer.lookup("158.62.204.28:25565")
 ecolor = 0xe91e63
@@ -12,8 +13,9 @@ class status(commands.Cog):
     
     def __init__(self, client):
         self.client = client
-        self.selfTTT.start()
-
+        #self.selfTTT.start()
+        #self.selfMC.start()
+    
     # ----- User commands -----
     @commands.command(aliases=['statusTTT','tttstatus','TTTstatus'])
     async def statusttt(self, ctx):
@@ -82,52 +84,122 @@ class status(commands.Cog):
 
 
     # ----- Self updating statuses -----
-    @tasks.loop(minutes=1.0)
-    async def selfTTT(self):
-        await self.client.wait_until_ready()
-        tttmessage = await self.client.get_channel(847228889435471893).fetch_message(864646038497001503)
-        # Queries the TTT server based on its IP and port
-        try:
-            with ServerQuerier(ttt_server) as server:
+    
+    #@commands.command()
+    #@only_these_users(736309573924683917,290926756397842432)
+    #async def initTTT(self, ctx):
+        
+
+
+    
+    #@tasks.loop(minutes=1.0)
+    #async def selfTTT(self, msg):
+
+
+
+
+
+    #@commands.command()
+    #@only_these_users(736309573924683917,290926756397842432)
+    ## what this command does is it initializes a status embed message to a channel and then auto refreshes it
+    
+    #async def initTTT(self, ctx):
+        
+        #await self.client.wait_until_ready()
+        
+        ## Queries the TTT server based on its IP and port
+        #try:
+            #with ServerQuerier(ttt_server) as server:
                
-            # Contains info about the gamemode, version, players, max players, etc.
-                ttt_info = server.info()                
-                ttt_players = server.players()
+            ## Contains info about the gamemode, version, players, max players, etc.
+                #ttt_info = server.info()                
+                #ttt_players = server.players()
                 
-                # adds every player to a list
-                players = []
-                for player in server.players()["players"]:
-                    players.append("__" + player["name"]+ "__")
+                ## adds every player to a list
+                #players = []
+                #for player in server.players()["players"]:
+                    #players.append("__" + player["name"]+ "__")
                 
-                player_count = len(players)
-                ttt_map = server.info()["map"]
-                max_players = server.info()["max_players"]
+                #player_count = len(players)
+                #ttt_map = server.info()["map"]
+                #max_players = server.info()["max_players"]
         
-        # in case server is not responding
-        except valve.source.NoResponseError:
-            time_now = datetime.now()
-            time_formatted = time_now.strftime("%d/%m/%Y  %H:%M:%S")
-            print(f"No response at {time_formatted}.")
+        ## in case server is not responding
+        #except valve.source.NoResponseError:
+            #time_now = datetime.now()
+            #time_formatted = time_now.strftime("%d/%m/%Y  %H:%M:%S")
+            #print(f"No response at {time_formatted}.")
 
-        newEmbedTTT = discord.Embed(title="**{server_name}**".format(**ttt_info), color = ecolor)
-        newEmbedTTT.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
-        newEmbedTTT.add_field(name="**Map**", value=f"{ttt_map}", inline=True)
-        newEmbedTTT.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
-        newEmbedTTT.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/syw85zst)", inline=True)
+        #initEmbedTTT = discord.Embed(title="**{server_name}**".format(**ttt_info), color = ecolor)
+        #initEmbedTTT.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        #initEmbedTTT.add_field(name="**Map**", value=f"{ttt_map}", inline=True)
+        #initEmbedTTT.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
+        #initEmbedTTT.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/syw85zst)", inline=True)
         
-        # states if players are online, and if they are, their usernames
-        if (player_count == 0):
-            newEmbedTTT.add_field(name="**Online Players**", value="No one is online.", inline=True)
+        ## states if players are online, and if they are, their usernames
+        #if (player_count == 0):
+            #initEmbedTTT.add_field(name="**Online Players**", value="No one is online.", inline=True)
         
-        if (player_count > 0):
-            playerString = '\n'.join(players)
-            newEmbedTTT.add_field(name="**Online Players**", value= playerString, inline=True)
+        #if (player_count > 0):
+            #playerString = '\n'.join(players)
+            #initEmbedTTT.add_field(name="**Online Players**", value= playerString, inline=True)
 
-        time_now = datetime.now()
-        time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
-        newEmbedTTT.set_footer(text=f"Last Updated: {time_formatted}")
+        #time_now = datetime.now()
+        #time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
+        #initEmbedTTT.set_footer(text=f"Last Updated: {time_formatted}")
   
-        await tttmessage.edit(embed = newEmbedTTT)
+        #tttmessage = await ctx.send(embed = initEmbedTTT)
+
+
+
+        #self.selfTTT.start(tttmessage)
+
+    #@tasks.loop(minutes=1.0)
+    ## this is the looping task for any initialized status message using the command above
+    #async def selfTTT(self, msg):    
+        #await self.client.wait_until_ready()
+        ## Queries the TTT server based on its IP and port
+        #try:
+            #with ServerQuerier(ttt_server) as server:
+               
+            ## Contains info about the gamemode, version, players, max players, etc.
+                #ttt_info = server.info()                
+                #ttt_players = server.players()
+                
+                ## adds every player to a list
+                #players = []
+                #for player in server.players()["players"]:
+                    #players.append("__" + player["name"]+ "__")
+                
+                #player_count = len(players)
+                #ttt_map = server.info()["map"]
+                #max_players = server.info()["max_players"]
+        
+        ## in case server is not responding
+        #except valve.source.NoResponseError:
+            #time_now = datetime.now()
+            #time_formatted = time_now.strftime("%d/%m/%Y  %H:%M:%S")
+            #print(f"No response at {time_formatted}.")
+
+        #newEmbedTTT = discord.Embed(title="**{server_name}**".format(**ttt_info), color = ecolor)
+        #newEmbedTTT.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        #newEmbedTTT.add_field(name="**Map**", value=f"{ttt_map}", inline=True)
+        #newEmbedTTT.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
+        #newEmbedTTT.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/syw85zst)", inline=True)
+        
+        ## states if players are online, and if they are, their usernames
+        #if (player_count == 0):
+            #newEmbedTTT.add_field(name="**Online Players**", value="No one is online.", inline=True)
+        
+        #if (player_count > 0):
+            #playerString = '\n'.join(players)
+            #newEmbedTTT.add_field(name="**Online Players**", value= playerString, inline=True)
+
+        #time_now = datetime.now()
+        #time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
+        #newEmbedTTT.set_footer(text=f"Last Updated: {time_formatted}")
+  
+        #await msg.edit(embed = newEmbedTTT)
     
     @tasks.loop(minutes=1.0)
     async def selfMC(self):
