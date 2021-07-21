@@ -102,7 +102,7 @@ class fun(commands.Cog):
 
     @commands.command()
     async def penis(self, ctx, user: discord.Member):
-        #random.seed(user.id)
+       # random.seed(user.id)
         randShaft = random.randint(0,30)
         penis = "8" + "=" * randShaft + "D"
         em = discord.Embed(title  = f"{user.display_name}'s Penis size:", description = f"{penis}", color=ecolor)

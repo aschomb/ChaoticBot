@@ -56,7 +56,7 @@ class status(commands.Cog):
             em.add_field(name="**Online Players**", value= playerString, inline=True)
 
         time_now = datetime.now()
-        time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
+        time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
         em.set_footer(text=f"Last Updated: {time_formatted}")
         await ctx.send(embed = em)
     

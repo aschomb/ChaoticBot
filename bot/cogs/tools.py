@@ -1,3 +1,4 @@
+from datetime import datetime
 import discord
 import time
 import json
@@ -89,13 +90,17 @@ class tools(commands.Cog):
             await ctx.send(embed=em)
         else:
             await ctx.send("Specified role does not exit")
+    
 
     @commands.command()
     @commands.cooldown(1.0, popTimer, commands.BucketType.guild)
     # take ping permissions from regular users, give permission to bot
     async def populate(self, ctx):
-        populator = get(ctx.guild.roles, name='Populator')
-        await ctx.send(f"{ctx.author.mention} has pinged {populator.mention}!")
+        time_now = datetime.now()
+        time = float(f"{time_now.hour}.{time_now.minute}")
+        if (time > 12.00) and (time < 23.59):
+            populator = get(ctx.guild.roles, name='Populator')
+            await ctx.send(f"{ctx.author.mention} has pinged {populator.mention}!")
 
     @populate.error
     async def populate_error(self, ctx, error):
