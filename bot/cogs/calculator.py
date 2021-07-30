@@ -24,18 +24,29 @@ class calculator(commands.Cog):
     async def fourfunc(self, ctx, operation, *nums):
         if operation not in ['+', '-', '*', '/']:
             await ctx.send("Please type a valid operation type.")
+        
         var =  f' {operation} '.join(nums)
         op: str 
         if operation == '+':
             op = "Addition"
         if operation == '-':
             op = "Subtraction"
+        if operation == '*':
+            op = "Multiplication"
         if operation == '/':
             op = "Division"
         
-        em =  discord.Embed(title=f"{op} Calculator", color=ecolor)
-        em.add_field(name=f"Requested by {ctx.author.display_name}", value=f"{var} = {eval(var)}", inline=True)
-        await ctx.send(embed=em)
+        check21 = int(''.join(nums))
+
+        if (check21 == 910) or (check21 == 109):
+            em = discord.Embed(title=f"{op} Calculator", color=ecolor)
+            em.add_field(name=f"Requested by {ctx.author.display_name}", value=f"{var} = 21", inline=True)
+            await ctx.send(embed=em)
+        
+        else:
+            em =  discord.Embed(title=f"{op} Calculator", color=ecolor)
+            em.add_field(name=f"Requested by {ctx.author.display_name}", value=f"{var} = {eval(var)}", inline=True)
+            await ctx.send(embed=em)
      
     @commands.command()
     async def factor(self, ctx, num: int):
