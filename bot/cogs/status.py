@@ -1,12 +1,20 @@
 import discord
 from datetime import datetime
+
+from bs4 import BeautifulSoup
+import requests
+import cchardet
+
+import asyncio
 import valve.source
 from valve.source.a2s import ServerQuerier
 from discord.ext import commands, tasks
 from mcstatus import MinecraftServer
 from dpytools.checks import *
+
 ttt_server = ("208.103.169.70", 27021)
 mc_server = MinecraftServer.lookup("158.62.204.28:25565")
+
 ecolor = 0xe91e63
 
 class status(commands.Cog):
@@ -85,17 +93,74 @@ class status(commands.Cog):
 
     # ----- Self updating statuses -----
     
-    #@commands.command()
-    #@only_these_users(736309573924683917,290926756397842432)
-    #async def initTTT(self, ctx):
+    @commands.command()
+    @only_these_users(736309573924683917,290926756397842432)
+    async def initTTT(self, ctx): 
         
+        await self.client.wait_until_ready() 
+        requests_session = requests.Session()
+        html = requests_session.get("https://www.battlemetrics.com/servers/gmod/11437227" ).text
+        soup = BeautifulSoup(html, "lxml")
+        server_name = soup.find("h2", {'class':"css-u0fcdd"}).text
+        player_count = soup.find("dt", text="Player count").findNext("dd").string
+        curMap = soup.find("dt", text="Map").findNext("dd").string
+        address = soup.find("dt", text="Address").findNext("span").text
+        servStatus = soup.find("dt", text="Status").findNext("dd").string
+        if servStatus == "online":
+            servStatus = "Online"
+        servRank = soup.find("dt", text="Rank").findNext("dd").string
+        country = soup.find("dt", text="Country").findNext("dd").string
+        tttInit = discord.Embed(title=f"**{server_name}**", color=ecolor)
+        tttInit.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        tttInit.add_field(name="**Map**", value=curMap, inline=True)
+        tttInit.add_field(name="**Player Count**", value=player_count, inline=True)
+        tttInit.add_field(name="**Connect**", value="[[Conect]](https://tinurl.com/syw85zst)", inline=True)
+        tttInit.add_field(name="**Status**", value=servStatus, inline=True)
+        tttInit.add_field(name="**Rank**", value=servRank, inline=True)
+        tttInit.add_field(name="**Address**", value=address, inline=True)
+        tttInit.add_field(name="**Online Players**", value="WIP", inline=True) 
+
+        time_now = datetime.now()
+        time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+        tttInit.set_footer(text=f"Last Updated: {time_formatted}")
+
+        tttmessage = await ctx.send(embed=tttInit)
+        
+        self.selfTTT.start(tttmessage)
+        #await self.selfTTT(tttmessage)
 
 
     
-    #@tasks.loop(minutes=1.0)
-    #async def selfTTT(self, msg):
+    @tasks.loop(minutes=1.0)
+    async def selfTTT(self, msg):
+        
+        await self.client.wait_until_ready() 
+        requests_session = requests.Session()
+        html = requests_session.get("https://www.battlemetrics.com/servers/gmod/11437227").text
+        soup = BeautifulSoup(html, "lxml")
+        server_name = soup.find("h2", {"class": "css-u0fcdd"}).text
+        player_count = soup.find("dt", text="Player count").findNext("dd").string
+        curMap = soup.find("dt", text="Map").findNext("dd").string
+        address = soup.find("dt", text="Address").findNext("span").text
+        servStatus = soup.find("dt", text="Status").findNext("dd").string
+        if servStatus == "online":
+            servStatus = "Online"
+        servRank = soup.find("dt", text="Rank").findNext("dd").string
+        country = soup.find("dt", text="Country").findNext("dd").string
+        newTTT = discord.Embed(title=f"**{server_name}**", color=ecolor)
+        newTTT.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        newTTT.add_field(name="**Map**", value=curMap, inline=True)
+        newTTT.add_field(name="**Player Count**", value=player_count, inline=True)
+        newTTT.add_field(name="**Connect**", value="[[Conect]](https://tinurl.com/syw85zst)", inline=True)
+        newTTT.add_field(name="**Status**", value=servStatus, inline=True)
+        newTTT.add_field(name="**Rank**", value=servRank, inline=True)
+        newTTT.add_field(name="**Address**", value=address, inline=True)
+        newTTT.add_field(name="**Online Players**", value="WIP", inline=True)
+        time_now = datetime.now()
+        time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+        newTTT.set_footer(text=f"Last Updated: {time_formatted}")
 
-
+        await msg.edit(embed=newTTT)
 
 
 

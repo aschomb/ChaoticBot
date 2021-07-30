@@ -10,7 +10,7 @@ client = commands.Bot(command_prefix = "$")
 client.remove_command("help")
 
 # cogs to be loaded
-cogs_load = ['animals.py','fun.py','help.py','moderation.py','status.py','tools.py']
+cogs_load = ['animals.py', 'calculator.py', 'fun.py','help.py','moderation.py','status.py','tools.py']
 
 
 # ----- cog management -----

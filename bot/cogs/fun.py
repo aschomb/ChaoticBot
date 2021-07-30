@@ -4,6 +4,7 @@ import random
 import time
 import re
 from discord.ext import commands
+from datetime import datetime
 
 ecolor = 0xe91e63
 
@@ -33,7 +34,13 @@ class fun(commands.Cog):
             await ctx.message.delete()
         except:
             pass
-        await ctx.send(strip_global_mentions(message,ctx))
+        em = discord.Embed(title=f"{ctx.author.display_name}'s message", color = ecolor)
+        em.add_field(name="Message:", value = strip_global_mentions(message , ctx))
+        time_now = datetime.now()
+        time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
+        em.set_footer(text=f"Used at {time_formatted}")
+        await ctx.send(embed=em)
+        #await ctx.send(strip_global_mentions(message,ctx))
 
     @commands.command()
     async def reverse(self, ctx, *, msg: str):
