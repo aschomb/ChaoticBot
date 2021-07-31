@@ -3,6 +3,7 @@ import hashlib
 import random
 import time
 import re
+
 from discord.ext import commands
 from datetime import datetime
 
@@ -130,6 +131,33 @@ class fun(commands.Cog):
             em.set_footer(text="I didn't even know a penis that small was possible")
 
         await ctx.send(embed = em)
+    
+    @commands.command()
+    async def ddRoll(self, ctx, number):
+        if number.startswith('d'):
+            if number == "d4":
+                roll = random.randint(1,5)
+            elif number == "d6":
+                roll = random.randint(1,7)
+            elif number == "d8":
+                roll = random.randint(1,9)
+            elif number == "d10":
+                roll = random.randint(1,11)
+            elif number == "d12":
+                roll = random.randint(1,13)
+            elif number == "d100":
+                roll = random.randint(1,101)
+            elif number == "d20":
+                roll = random.randint(1,21)
+        else:
+            roll = random.randint(1,number)
+
+
+        em = discord.Embed(title="DnD Dice Roll", color=ecolor)
+        em.add_field(name=f"Rolled by {ctx.author.display_name}", value=f"You rolled: {roll}",inline=True)
+        await ctx.send(embed=em)
+
+
     # ------------------
 
 def setup(client):

@@ -1,11 +1,11 @@
 import discord
 import random
 import time
+
 import numpy as np
 import numba as nb
 from sympy import *
 import sympy as sp
-
 from discord.ext import commands
 
 ecolor = 0xe91e63
@@ -38,7 +38,7 @@ class calculator(commands.Cog):
         
         check21 = int(''.join(nums))
 
-        if (check21 == 910) or (check21 == 109):
+        if ((check21 == 910) or (check21 == 109)) and (op == "Addition"):
             em = discord.Embed(title=f"{op} Calculator", color=ecolor)
             em.add_field(name=f"Requested by {ctx.author.display_name}", value=f"{var} = 21", inline=True)
             await ctx.send(embed=em)

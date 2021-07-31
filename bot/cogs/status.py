@@ -1,16 +1,15 @@
 import discord
-from datetime import datetime
-
-from bs4 import BeautifulSoup
-import requests
-import cchardet
-
 import asyncio
+import requests
+
+from datetime import datetime
+from bs4 import BeautifulSoup
 import valve.source
 from valve.source.a2s import ServerQuerier
 from discord.ext import commands, tasks
 from mcstatus import MinecraftServer
 from dpytools.checks import *
+import cchardet
 
 ttt_server = ("208.103.169.70", 27021)
 mc_server = MinecraftServer.lookup("158.62.204.28:25565")
