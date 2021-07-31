@@ -1,6 +1,10 @@
 import discord
 import re
 
+from better_profanity import profanity
+slurs = ['fag','faggot','nigger','nigga']
+profanity.load_censor_words(slurs)
+
 from discord.ext import commands
 from dpytools.checks import *
 
@@ -94,7 +98,18 @@ class moderation(commands.Cog):
     async def announce(self, ctx, channel: discord.TextChannel, *, title, message):
         em = discord.Embed(description = f"{message}")
         await channel.send(embed = em)
-   
+    
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if not message.author.bot:
+            if profanity.contains_profanity(message.content):
+                await message.delete()
+                await message.channel.send(f"{message.author.mention}, you can't say that.")
+        
+        if message.author.bot:
+            if profanity.contains_profanity(message.content):
+                await message.delete()
+
     #@commands.Cog.listener()
     #async def on_message(self, message):
         #slurs = ["fag","faggot","nigger","nigga"]

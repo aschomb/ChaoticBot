@@ -4,6 +4,10 @@ import random
 import time
 import re
 
+from better_profanity import profanity
+slurs = ['fag','faggot','nigger','nigga']
+profanity.load_censor_words(slurs)
+
 from discord.ext import commands
 from datetime import datetime
 
@@ -30,17 +34,20 @@ class fun(commands.Cog):
 
     # the bot repeats whatever string is entered by the user
     @commands.command()
-    async def say(self, ctx, *, message: str):
-        try:
-            await ctx.message.delete()
-        except:
+    async def say(self, ctx, *, message):
+        if profanity.contains_profanity(message):
             pass
-        em = discord.Embed(title=f"{ctx.author.display_name}'s message", color = ecolor)
-        em.add_field(name="Message:", value = strip_global_mentions(message , ctx))
-        time_now = datetime.now()
-        time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
-        em.set_footer(text=f"Used at {time_formatted}")
-        await ctx.send(embed=em)
+        else:
+            try:
+                await ctx.message.delete()
+            except:
+                pass
+            em = discord.Embed(title=f"{ctx.author.display_name}'s message", color = ecolor)
+            em.add_field(name="Message:", value = strip_global_mentions(message , ctx))
+            time_now = datetime.now()
+            time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
+            em.set_footer(text=f"Used at {time_formatted}")
+            await ctx.send(embed=em)
         #await ctx.send(strip_global_mentions(message,ctx))
 
     @commands.command()
