@@ -141,25 +141,8 @@ class fun(commands.Cog):
     
     @commands.command()
     async def ddRoll(self, ctx, number):
-        if number.startswith('d'):
-            if number == "d4":
-                roll = random.randint(1,5)
-            elif number == "d6":
-                roll = random.randint(1,7)
-            elif number == "d8":
-                roll = random.randint(1,9)
-            elif number == "d10":
-                roll = random.randint(1,11)
-            elif number == "d12":
-                roll = random.randint(1,13)
-            elif number == "d100":
-                roll = random.randint(1,101)
-            elif number == "d20":
-                roll = random.randint(1,21)
-        else:
-            roll = random.randint(1,number)
-
-
+        roll: int
+        roll = random.randint(1,int(number))
         em = discord.Embed(title="DnD Dice Roll", color=ecolor)
         em.add_field(name=f"Rolled by {ctx.author.display_name}", value=f"You rolled: {roll}",inline=True)
         await ctx.send(embed=em)

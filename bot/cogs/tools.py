@@ -2,6 +2,7 @@ import discord
 import time
 import json
 
+#from bin import *
 from datetime import datetime
 from discord.ext import commands
 from discord.utils import get
@@ -70,6 +71,10 @@ class tools(commands.Cog):
     def __init__(self, client):
         self.client = client
     
+    #@commands.command()
+    #async def test(self, ctx):
+    #    raise TestEror()
+
     # testing the bot's latency ontop of the Discord API
     @commands.command()
     async def ping(self, ctx):
