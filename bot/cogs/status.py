@@ -20,6 +20,7 @@ import cchardet
 
 
 ttt_server = ("208.103.169.70", 27021)
+tf2_server = ("131.153.29.243", 27015)
 mc_server = MinecraftServer.lookup("158.62.204.28:25565")
 
 ecolor = 0xe91e63
@@ -45,7 +46,7 @@ class status(commands.Cog):
                 # adds every player to a list
                 players = []
                 for player in server.players()["players"]:
-                    players.append("__" + player["name"]+ "__")
+                    players.append("__" + player["name"] + "__")
                 
                 player_count = len(players)
                 ttt_map = server.info()["map"]
@@ -74,7 +75,47 @@ class status(commands.Cog):
         time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
         em.set_footer(text=f"Last Updated: {time_formatted}")
         await ctx.send(embed = em)
-    
+        
+    @commands.command(aliases=['statusTF2','TF2Status','tf2status'])
+    async def statustf2(self, ctx):
+        try:
+            with ServerQuerier(tf2_server) as server:
+
+                tf2_info = server.info()
+                tf2_players = server.players()
+
+                players = []
+                for player in server.players()["players"]:
+                    players.append("__" + player["name"] + "__")
+                
+                player_count = len(players)
+                tf2_map = server.info()["map"]
+                max_players = server.info()["max_players"]
+
+        except valve.source.NoResponseError:
+            await ctx.send(f"``Server {tf2_server[0]}:{tf2_server[1]} timed out!  No Response.``")
+            return 0
+
+        em = discord.Embed(title="**{server_name}**".format(**tf2_info), color=ecolor)
+        em.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        em.add_field(name="**Map**", value=f"{tf2_map}", inline=True)
+        em.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
+        em.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/36x3a6ns)", inline=True)
+
+        if (player_count == 0):
+            em.add_field(name="**Online Players**", value = "No one is online.", inline=True)
+
+        if (player_count > 0):
+            playerString = '\n'.join(players)
+            em.add_field(name="**Online Players**", value = playerString, inline=True)
+
+        time_now = datetime.now()
+        time_formatted = time_now.strftime("%m/%d/%Y at %H:%M:%S")
+        em.set_footer(text=f"Last Updated: {time_formatted}")
+        await ctx.send(embed=em)
+
+
+
     @commands.command(aliases=['statusMC','mcstatus','MCstatus'])
     async def statusmc(self, ctx):
         em = discord.Embed(title="**ChaoticCove**", color = ecolor)
@@ -247,6 +288,7 @@ class status(commands.Cog):
         ypoints = player_counts
         #plt.plot(time_stamps,player_counts)
         plt.plot(xpoints, ypoints)
+        plt.grid()
         #plt.savefig('player_count_history.png')
         plt.savefig('/root/ChaoticBot/bot/cogs/player_count_history.png')
         
@@ -335,6 +377,7 @@ class status(commands.Cog):
             ypoints = player_counts
             #plt.plot(time_stamps,player_counts)
             plt.plot(xpoints, ypoints)
+            plt.grid()
             #plt.savefig('player_count_history.png')
             plt.savefig('/root/ChaoticBot/bot/cogs/player_count_history.png')
             
