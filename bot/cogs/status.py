@@ -214,6 +214,188 @@ class status(commands.Cog):
     #    except:
     #        pass
 
+    # TF
+    @commands.command()
+    @only_these_users(736309573924683917,290926756397842432)
+    # what this command does is it initializes a status embed message to a channel and then auto refreshes it
+    async def initTF2(self, ctx):
+        
+        await self.client.wait_until_ready()
+        
+        # Queries the TTT server based on its IP and port
+        try:
+            with ServerQuerier(tf2_server) as server:
+               
+            # Contains info about the gamemode, version, players, max players, etc.
+                tf2_info = server.info()                
+                tf2_players = server.players()
+                
+                # adds every player to a list
+                players = []
+                for player in server.players()["players"]:
+                    players.append("__" + player["name"]+ "__")
+                
+                player_count = len(players)
+                tf2_map = server.info()["map"]
+                max_players = server.info()["max_players"]
+        
+        # in case server is not responding
+        except valve.source.NoResponseError:
+            time_now = datetime.now()
+            time_formatted = time_now.strftime("%d/%m/%Y  %H:%M:%S")
+            print(f"No response at {time_formatted}.")
+
+        initEmbedTF2 = discord.Embed(title="**{server_name}**".format(**tf2_info), color = ecolor)
+        initEmbedTF2.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+        initEmbedTF2.add_field(name="**Map**", value=f"{tf2_map}", inline=True)
+        initEmbedTF2.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
+        initEmbedTF2.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/36x3a6ns)", inline=True)
+        
+        # states if players are online, and if they are, their usernames
+        if (player_count == 0):
+            initEmbedTF2.add_field(name="**Online Players**", value="No one is online.", inline=True)
+        
+        if (player_count > 0):
+            playerString = '\n'.join(players)
+            initEmbedTF2.add_field(name="**Online Players**", value= playerString, inline=True)
+        
+        #html = requests.get('https://www.gametracker.com/server_info/208.103.169.70:27021/').text
+        #soup = BeautifulSoup(html, 'html.parser')
+        #img_tag = soup.find('img', {"class": "item_260x170"})
+        #image = img_tag['src']
+        #initEmbedTTT.set_image(url="https:" + image)
+        
+        
+        now = datetime.now().date()
+        yesterday = now - timedelta(days=1)
+        url = 'https://api.battlemetrics.com/servers/12337571'
+        player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
+        #print(player_data_request)
+        
+        time_stamps = []
+        player_counts = []
+        for date in player_data_request.json()['data']:
+            time_stamps.append(date['attributes']['timestamp'])
+            player_counts.append(date['attributes']['value'])
+        
+        #print(time_stamps)
+        #print(player_counts)
+        
+        #xpoints = np.array(time_stamps)
+        xpoints = time_stamps
+        #ypoints = np.array(player_counts)
+        ypoints = player_counts
+        #plt.plot(time_stamps,player_counts)
+        plt.plot(xpoints, ypoints)
+        plt.grid()
+        #plt.savefig('player_count_history.png')
+        plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')
+        
+        tf2graph = discord.File("/root/ChaoticBot/bot/cogs/tf2_player_count_history.png", filename="tf2graph.png")
+        initEmbedTF2.set_image(url="attachment://tf2graph.png")
+    
+        time_now = datetime.now()
+        time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+        initEmbedTF2.set_footer(text=f"Last Updated: {time_formatted}")
+  
+        tf2message = await ctx.send(file = tf2graph, embed = initEmbedTF2)
+
+    
+        try:
+            self.selfTF2.start(tf2message)
+        except RuntimeError:
+            await tf2message.delete() 
+            await ctx.send(f"{ctx.author.mention}, TTT status is already running elsewhere (if this is not the case, contact Joker).")
+
+    @tasks.loop(minutes=1.0)
+    # this is the looping task for any initialized status message using the command above
+    async def selfTF2(self, msg):    
+        await self.client.wait_until_ready()
+        # Queries the TTT server based on its IP and port
+        try:
+            try:
+                with ServerQuerier(tf2_server) as server:
+               
+                # Contains info about the gamemode, version, players, max players, etc.
+                    tf2_info = server.info()                
+                    tf2_players = server.players()
+                
+                    # adds every player to a list
+                    players = []
+                    for player in server.players()["players"]:
+                        players.append("__" + player["name"]+ "__")
+                
+                    player_count = len(players)
+                    tf2_map = server.info()["map"]
+                    max_players = server.info()["max_players"]
+        
+            # in case server is not responding
+            except valve.source.NoResponseError:
+                time_now = datetime.now()
+                time_formatted = time_now.strftime("%d/%m/%Y  %H:%M:%S")
+                print(f"No response at {time_formatted}.")
+
+            newEmbedTF2 = discord.Embed(title="**{server_name}**".format(**tf2_info), color = ecolor)
+            newEmbedTF2.set_thumbnail(url="https://i.imgur.com/eUgcNDX.png")
+            newEmbedTF2.add_field(name="**Map**", value=f"{tf2_map}", inline=True)
+            newEmbedTF2.add_field(name="**Player Count**", value=f"{player_count}/{max_players}", inline=True)
+            newEmbedTF2.add_field(name="**Connect**", value="[[Connect]](https://tinyurl.com/36x3a6ns)", inline=True)
+        
+            # states if players are online, and if they are, their usernames
+            if (player_count == 0):
+                newEmbedTF2.add_field(name="**Online Players**", value="No one is online.", inline=True)
+        
+            if (player_count > 0):
+                playerString = '\n'.join(players)
+                newEmbedTF2.add_field(name="**Online Players**", value= playerString, inline=True)
+
+            #html = requests.get('https://www.gametracker.com/server_info/208.103.169.70:27021/').text
+            #soup = BeautifulSoup(html, 'html.parser')
+            #img_tag = soup.find('img', {"class": "item_260x170"})
+            #image = img_tag['src']
+            #newEmbedTTT.set_image(url="https:" + image)
+
+            now = datetime.now().date()
+            yesterday = now - timedelta(days=1)
+            url = 'https://api.battlemetrics.com/servers/12337571'
+            player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
+            #print(player_data_request)
+        
+            time_stamps = []
+            player_counts = []
+            for date in player_data_request.json()['data']:
+                time_stamps.append(date['attributes']['timestamp'])
+                player_counts.append(date['attributes']['value'])
+        
+            #print(time_stamps)
+            #print(player_counts)
+        
+            #xpoints = np.array(time_stamps)
+            xpoints = time_stamps
+            #ypoints = np.array(player_counts)
+            ypoints = player_counts
+            #plt.plot(time_stamps,player_counts)
+            plt.plot(xpoints, ypoints)
+            plt.grid()
+            #plt.savefig('player_count_history.png')
+            plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')
+            
+            tf2graph = discord.File("/root/ChaoticBot/bot/cogs/tf2_player_count_history.png", filename="tf2graph.png")
+            newEmbedTF2.set_image(url="attachment://tf2graph.png")
+ 
+                
+            time_now = datetime.now()
+            time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+            newEmbedTF2.set_footer(text=f"Last Updated: {time_formatted}")
+    
+            await msg.edit(embed = newEmbedTF2)
+
+        except:
+            pass
+
+
+    # ---
+
 
 
     @commands.command()

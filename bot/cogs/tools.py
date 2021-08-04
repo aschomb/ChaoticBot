@@ -13,6 +13,7 @@ ecolor = 0xe91e63
 popTimer: float
 gameTimer: float
 movieTimer: float
+tf2Timer: float
 
 # initially opens and reads json file for timers
 with open("/root/ChaoticBot/bot/timers.json", 'r', encoding='utf-8') as data:
@@ -31,6 +32,9 @@ def getTimers():
         if var["name"] == "movienight":
             global movieTimer
             movieTimer = var["time"]
+        if var["name"] == "tf2":
+            global tf2Timer
+            tf2Timer = var["time"]
 
 # for resyncing the variables on start
 getTimers()
@@ -54,6 +58,10 @@ def setTimer(role, time):
                 break
         if role == "movienight":
             if var["name"] == "movienight":
+                var["time"] = time
+                break
+        if role == "tf2":
+            if var["name"] == "tf2":
                 var["time"] = time
                 break
 
@@ -87,7 +95,7 @@ class tools(commands.Cog):
     # for setting cooldowns on the role ping commands (the next 6, ping command paired with it's error)
     @commands.command()
     async def setCD(self, ctx, role: str, time: float):
-        if role == "populate" or "gamenight" or "movienight":
+        if role == "populate" or "gamenight" or "movienight" or "tf2":
             setTimer(role, time)
             em = discord.Embed(title="**Cooldown Set**", color=ecolor)
             em.add_field(name="**Role**", value=f"{role}", inline=True)
@@ -151,6 +159,19 @@ class tools(commands.Cog):
 
     @movienight.error
     async def movienight_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"{ctx.author.mention}, this command is still on cooldown!")
+            time = error.retry_after
+            await ctx.send('Try again in {:.2f} hours or {:.2f} minutes!'.format(time/3600, time/60))
+
+    @commands.command()
+    @commands.cooldown(1.0, tf2Timer, commands.BucketType.guild)
+    async def tf2(self, ctx):
+        tf2ers = get(ctx.guild.roles, name='TF2')
+        await ctx.send(f"{ctx.author.mention} has pinged {tf2ers.mention}!")
+    
+    @tf2.error
+    async def tf2_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"{ctx.author.mention}, this command is still on cooldown!")
             time = error.retry_after
