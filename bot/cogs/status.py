@@ -269,24 +269,24 @@ class status(commands.Cog):
         now = datetime.now().date()
         yesterday = now - timedelta(days=1)
         url = 'https://api.battlemetrics.com/servers/12337571'
-        player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
+        tf2_player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
         #print(player_data_request)
         
-        time_stamps = []
-        player_counts = []
-        for date in player_data_request.json()['data']:
-            time_stamps.append(date['attributes']['timestamp'])
-            player_counts.append(date['attributes']['value'])
+        tf2_time_stamps = []
+        tf2_player_counts = []
+        for date in tf2_player_data_request.json()['data']:
+            tf2_time_stamps.append(date['attributes']['timestamp'])
+            tf2_player_counts.append(date['attributes']['value'])
         
         #print(time_stamps)
         #print(player_counts)
         
         #xpoints = np.array(time_stamps)
-        xpoints = time_stamps
+        tf2_xpoints = tf2_time_stamps
         #ypoints = np.array(player_counts)
-        ypoints = player_counts
+        tf2_ypoints = tf2_player_counts
         #plt.plot(time_stamps,player_counts)
-        plt.plot(xpoints, ypoints)
+        plt.plot(tf2_xpoints, tf2_ypoints)
         plt.grid()
         #plt.savefig('player_count_history.png')
         plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')
@@ -358,24 +358,24 @@ class status(commands.Cog):
             now = datetime.now().date()
             yesterday = now - timedelta(days=1)
             url = 'https://api.battlemetrics.com/servers/12337571'
-            player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
+            tf2_player_data_request = requests.get(url + f'/player-count-history?start={yesterday.year:04d}-{yesterday.month:02d}-{yesterday.day:02d}T12%3A00%3A00Z&stop={now.year:04d}-{now.month:02d}-{now.day:02d}T12%3A00%3A00Z&resolution=60')
             #print(player_data_request)
         
-            time_stamps = []
-            player_counts = []
-            for date in player_data_request.json()['data']:
-                time_stamps.append(date['attributes']['timestamp'])
-                player_counts.append(date['attributes']['value'])
+            tf2_time_stamps = []
+            tf2_player_counts = []
+            for date in tf2_player_data_request.json()['data']:
+                tf2_time_stamps.append(date['attributes']['timestamp'])
+                tf2_player_counts.append(date['attributes']['value'])
         
             #print(time_stamps)
             #print(player_counts)
         
             #xpoints = np.array(time_stamps)
-            xpoints = time_stamps
+            tf2_xpoints = tf2_time_stamps
             #ypoints = np.array(player_counts)
-            ypoints = player_counts
+            tf2_ypoints = tf2_player_counts
             #plt.plot(time_stamps,player_counts)
-            plt.plot(xpoints, ypoints)
+            plt.plot(tf2_xpoints, tf2_ypoints)
             plt.grid()
             #plt.savefig('player_count_history.png')
             plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')

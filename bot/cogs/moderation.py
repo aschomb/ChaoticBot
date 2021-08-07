@@ -6,6 +6,7 @@ slurs = ['fag','faggot','nigger','nigga']
 profanity.load_censor_words(slurs)
 
 from discord.ext import commands
+from discord.ext.commands import errors
 from dpytools.checks import *
 
 ecolor = 0xe91e63
@@ -88,10 +89,26 @@ class moderation(commands.Cog):
     # ------------------------
 
     @commands.command()
-    @only_these_users(736309573924683917,290926756397842432)
+    #@only_these_users(736309573924683917,290926756397842432)
     async def dm(self, ctx, user: discord.User, *, msg):
+        #try:
+        await user.send(f'``{msg}  -{ctx.author.display_name}``')
         await ctx.send('Successful.')
-        await user.send(f'{msg}')
+        #except:
+        #    await ctx.send("User can not be found or can not receive DMs.")
+
+    @dm.error
+    async def dm_error(self, ctx, error):
+        if isinstance(error, commands.UserNotFound):
+            await ctx.send(f"{ctx.author.mention}, specified user can not be found.")
+        if isinstance(error, discord.errors.Forbidden):
+            await ctx.send(f"{ctx.author.mention}. specified user can not receieve DMs.")
+    #@dm.error
+    #async def dm_error(self, ctx, error):
+    #    if isinstance(error, errors.UserNotFound):
+    #        await ctx.send(f"{ctx.author.mention}, specified user can not be found.")
+    #    if isinstance(error, Forbidden):
+    #        await ctx.send(f"{ctx.author.mention}, specified user can not receive DMs.")
 
     @commands.command()
     @only_these_users(736309573924683917,290926756397842432)
