@@ -99,7 +99,7 @@ class fun(commands.Cog):
         c = random.choice(emojis)
 
         slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
-
+         
         if (a == b == c):
             await ctx.send(f"{slotmachine} All matching, you won! 🎉")
         elif (a == b) or (a == c) or (b == c):

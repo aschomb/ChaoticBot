@@ -88,10 +88,18 @@ class moderation(commands.Cog):
             await ctx.send("Error removing role.")
     # ------------------------
 
+    pic_ext = ['.jpg','.png','.jpeg']
+
     @commands.command()
     #@only_these_users(736309573924683917,290926756397842432)
     async def dm(self, ctx, user: discord.User, *, msg):
         #try:
+        #for ext in pic_ext:
+        #    if msg.content.endswith(ext):
+        #        img = requests.get(msg.attachments[0]['url'])
+        #        img = discord.File(img, filename=f"pic.{ext}")
+        #        await user.send(f'``{msg}  -{ctx.author.display_name}``', file=img)
+        
         await user.send(f'``{msg}  -{ctx.author.display_name}``')
         await ctx.send('Successful.')
         #except:
@@ -109,6 +117,25 @@ class moderation(commands.Cog):
     #        await ctx.send(f"{ctx.author.mention}, specified user can not be found.")
     #    if isinstance(error, Forbidden):
     #        await ctx.send(f"{ctx.author.mention}, specified user can not receive DMs.")
+    
+    @commands.command()
+    @only_these_users(736309573924683917,290926756397842432)
+    async def purge(self, ctx, amount: int):
+        channel = ctx.message.channel
+        messages = []
+        async for message in channel.history(limit=amount+1):
+            messages.append(message)
+
+        await channel.delete_messages(messages)
+        await ctx.send(f'{amount} messages have been purged by {ctx.message.author.mention}')
+    
+    @purge.error
+    async def purge_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(f"{ctx.author.mention}, check the parameters you used (command only takes an integer).")
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send(f"{ctx.author.mention}, purge failed. You probably don't have permission to purge.")
+
 
     @commands.command()
     @only_these_users(736309573924683917,290926756397842432)
