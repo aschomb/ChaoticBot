@@ -10,7 +10,7 @@ class helpmenu(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):
         em = discord.Embed(title = "__Help Menu__", description = "Use $help <command> for more information on a command!", color = ecolor)
-        em.add_field(name = "Animals", value = "bird\nbirb\ncat\ndog\nduck\nfox\nfrog\nlizard\nkangaroo\nkoala\npanda\npenguin\nrabbit\nraccoon\nred panda", inline = True)
+        em.add_field(name = "Animals", value = "axolotl\nbird\nbirb\ncat\ncow\ndog\nduck\nfox\nfrog\nlizard\nkangaroo\nkoala\npanda\npenguin\nrabbit\nraccoon\nred panda", inline = True)
         em.add_field(name = "Fun", value = "coinflip\nmd5\npenis\nreverse\nrolldice\nsay\nslots\nsha1\nsha224\nsha256\nsha384\nsha512", inline = True)
         em.add_field(name = "Moderation", value = "addrole\nannounce\nban\ndm\nkick\nremoverole\nunban", inline = True)
         em.add_field(name = "Tools", value = "dnd\ngamenight\nmovienight\nping\npopulate", inline = True)
@@ -161,7 +161,7 @@ class helpmenu(commands.Cog):
     async def animal(self, ctx):
         em = discord.Embed(title = "__Animal__", description = "Retrieves a picture of a given animal.", color = ecolor)
         em.add_field(name = "**Syntax**", value = "$animal <animal>")
-        em.add_field(name="**Accepted Animals**:", value = "bird\nbirb\ncat\ndog\nduck\nfox\nfrog\nlizard\nkangaroo\nkoala\npanda\npenguin\nrabbit\nraccoon\nred panda")
+        em.add_field(name="**Accepted Animals**:", value = "axolotl\nbird\nbirb\ncat\ncow\ndog\nduck\nfox\nfrog\nlizard\nkangaroo\nkoala\npanda\npenguin\nrabbit\nraccoon\nred panda")
         await ctx.send(embed = em)
 
     @help.command()

@@ -153,6 +153,15 @@ class animals(commands.Cog):
                 em = discord.Embed(title=f"Axolotl requested by {ctx.author.display_name}:", color=ecolor)
                 em.set_image(url="attachment://axImg.jpg")
                 await ctx.send(file = axolotlImg, embed=em)
+            
+            if (an.lower() == "cow"):
+                await req.close()
+                image = os.listdir('/root/ChaoticBot/bot/images/cow')
+                random_image = random.choice(image)
+                cowImg = discord.File("/root/ChaoticBot/bot/images/cow/" + random_image, filename="cowImg.jpg")
+                em = discord.Embed(title=f"Cow requested by {ctx.author.display_name}:", color=ecolor)
+                em.set_image(url="attachment://cowImg.jpg")
+                await ctx.send(file = cowImg, embed=em)
             # -----------------------
 
     # Cooldown error

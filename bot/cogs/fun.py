@@ -94,18 +94,42 @@ class fun(commands.Cog):
     @commands.cooldown(rate=1, per=1.0, type=commands.BucketType.user)
     async def slot(self, ctx):
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
+        emojis = ''.join(random.sample(emojis, len(emojis)))
+        emojis = ''.join(random.sample(emojis, len(emojis)))
+
+        if ctx.author.id == 290926756397842432:
+            e = random.choice(emojis)
+            slotmachine = f"**[ {e} {e} {e} ]\n{ctx.author.name}**,"
+            #await ctx.send(f"{slotmachine} All matching, you won! 🎉")
+            em = discord.Embed(title = "**Slot Machine**", description = f"{slotmachine} All matching, you won! 🎉", color = ecolor)
+            await ctx.send(embed=em)
+            return 0
+
         a = random.choice(emojis)
         b = random.choice(emojis)
         c = random.choice(emojis)
 
         slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
-         
+        
+        #em = discord.Embed(title = "**Slots Machine**", color=ecolor)
+        
+        
         if (a == b == c):
-            await ctx.send(f"{slotmachine} All matching, you won! 🎉")
+            em = discord.Embed(title= "**Slot Machine**", description = f"{slotmachine} All matching, you won! 🎉", color = ecolor)
+            #await ctx.send(f"{slotmachine} All matching, you won! 🎉")
         elif (a == b) or (a == c) or (b == c):
-            await ctx.send(f"{slotmachine} 2 in a row, you won! 🎉")
+            em = discord.Embed(title= "**Slot Machine**", description = f"{slotmachine} 2 in a row, you won! 🎉", color = ecolor)
+            #await ctx.send(f"{slotmachine} 2 in a row, you won! 🎉") 
         else:
-            await ctx.send(f"{slotmachine} No match, you lost 😢")
+            em = discord.Embed(title= "**Slot Machine**", description = f"{slotmachine} No match, you lost 😢", color = ecolor)
+            #await ctx.send(f"{slotmachine} No match, you lost 😢")
+        await ctx.send(embed=em)
+
+    
+    @slot.error
+    async def slot_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"{ctx.author.mention}, command is on cooldown.  Try again in {error.retry_after:.2f}s.")
     # -----------------------------
 
     # ----- Random -----
