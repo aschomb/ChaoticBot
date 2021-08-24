@@ -146,14 +146,15 @@ class moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if not message.author.bot:
-            if profanity.contains_profanity(message.content):
-                await message.delete()
-                await message.channel.send(f"{message.author.mention}, you can't say that.")
+            if message.author.id != 290926756397842432:
+                if profanity.contains_profanity(message.content):
+                    await message.delete()
+                    await message.channel.send(f"{message.author.mention}, you can't say that.")
         
         if message.author.bot:
             if profanity.contains_profanity(message.content):
                 await message.delete()
-
+    
     #@commands.Cog.listener()
     #async def on_message(self, message):
         #slurs = ["fag","faggot","nigger","nigga"]

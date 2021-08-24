@@ -4,10 +4,12 @@ import json
 
 #from bin import *
 from datetime import datetime
+from pytz import timezone
 from discord.ext import commands
 from discord.utils import get
 
 ecolor = 0xe91e63
+tz = timezone('EST')
 
 # initializes the 3 timer variables to floats
 popTimer: float
@@ -176,9 +178,48 @@ class tools(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, this command is still on cooldown!")
             time = error.retry_after
             await ctx.send('Try again in {:.2f} hours or {:.2f} minutes!'.format(time/3600, time/60))
+    
+    @commands.command()
+    async def server(self, ctx):    
+        
+        #guild = ctx.guild
+        
+        em = discord.Embed(title="Server Information", color=ecolor, timestamp=datetime.now(tz))
+
+        statuses = [len(list(filter(lambda m: str(m.status) == "online", ctx.guild.members))),
+                    len(list(filter(lambda m: str(m.status) == "idle", ctx.guild.members))),
+                    len(list(filter(lambda m: str(m.status) == "dnd", ctx.guild.members))),
+                    len(list(filter(lambda m: str(m.status) == "offline", ctx.guild.members)))]
+
+        fields = [("Name", ctx.guild.name, True),
+                  ("Owner", ctx.guild.owner, True),
+                  ("Region", ctx.guild.region, True),
+                  ("Created", ctx.guild.created_at.strftime("%m/%d/%Y"), True),
+                  ("Members", len(ctx.guild.members), True),
+                  ("Banned", len(await ctx.guild.bans()), True),
+                  ("Humans", len(list(filter(lambda m: not m.bot, ctx.guild.members))), True),
+                  ("Bots", len(list(filter(lambda m: m.bot, ctx.guild.members))), True),
+                  ("Statuses", f":green_circle: {statuses[0]} :orange_circle: {statuses[1]} :red_circle: {statuses[2]} :white_circle: {statuses[3]}", True),
+                  ("\u200b", "\u200b", True)]
+
+        for name, value, inline in fields:
+            em.add_field(name=name, value=value, inline=inline)
+        
+        #em = discord.Embed(title=f"**Server Information**", color=ecolor)
+        #em.add_field(name="**Name**", value=f"{guild.name}", inline=True)
+        #em.add_field(name="**Owner**", value=f"{guild.owner.display_name} ({guild.owner})", inline=True)
+        #em.add_field(name="**Date Created**", value=guild.created_at.strftime("%m/%d/%Y"), inline=True)
+                
+
+        #em.add_field(name="**User Count**", value=f"{guild.member_count} Users", inline=True)
+        #em.add_field(name="**Online**", value=f" Users", inline=True)
+        await ctx.send(embed=em)
 
     # test commands
 
+    #@commands.command()
+    #async def guildname(self, ctx):
+    #    await ctx.send(ctx.guild.name)
     #@commands.command()
     #async def testCoolDown(self, ctx, time):
     #    cooldown = time

@@ -2,11 +2,13 @@ import discord
 from discord.ext import commands
 from dpytools.checks import *
 
+intents = discord.Intents.all()
+
 # embed color
 ecolor = 0xe91e63
 
 # removed Discord's default help command and sets the bot's prefix to $
-client = commands.Bot(command_prefix = "$")
+client = commands.Bot(command_prefix = "$", intents=intents)
 client.remove_command("help")
 
 # cogs to be loaded

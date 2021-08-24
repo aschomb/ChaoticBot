@@ -21,7 +21,7 @@ import cchardet
 
 ttt_server = ("208.103.169.70", 27021)
 tf2_server = ("131.153.29.243", 27015)
-mc_server = MinecraftServer.lookup("158.62.204.28:25565")
+mc_server = MinecraftServer.lookup("63.135.165.174:25565")
 
 ecolor = 0xe91e63
 
@@ -125,7 +125,7 @@ class status(commands.Cog):
         em.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
         mc_latency = mc_status.latency
         em.add_field(name="**Latency**", value = f"{mc_latency}")
-        em.add_field(name="**IP**", value = "158.62.204.28")
+        em.add_field(name="**IP**", value = "63.135.165.174")
         if mc_player_count == 0:
             em.add_field(name="**Online Players:**", value ="No one is online.")
         if mc_player_count > 0:
@@ -133,7 +133,7 @@ class status(commands.Cog):
             #mc_players = '\n'.join(mc_query.players.names)
             em.add_field(name="**Online Players:**", value = "__{0}__".format("\n".join(mc_query.players.names)))
         time_now = datetime.now()
-        time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
+        time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
         em.set_footer(text=f"Last Updated: {time_formatted}")
         await ctx.send(embed = em)
     # -------------------------
@@ -289,9 +289,11 @@ class status(commands.Cog):
         plt.plot(tf2_xpoints, tf2_ypoints)
         plt.grid()
         #plt.savefig('player_count_history.png')
-        plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')
+        TF2_time_now = datetime.now()
+        TF2_graph_name = TF2_time_now.strftime("%m:%d:%Y-%H:%M:%S")
+        plt.savefig('/root/ChaoticBot/bot/cogs/TF2Graphs/' + TF2_graph_name + ".png")
         
-        tf2graph = discord.File("/root/ChaoticBot/bot/cogs/tf2_player_count_history.png", filename="tf2graph.png")
+        tf2graph = discord.File("/root/ChaoticBot/bot/cogs/TF2Graphs/" + TF2_graph_name + ".png", filename="tf2graph.png")
         initEmbedTF2.set_image(url="attachment://tf2graph.png")
     
         time_now = datetime.now()
@@ -378,9 +380,11 @@ class status(commands.Cog):
             plt.plot(tf2_xpoints, tf2_ypoints)
             plt.grid()
             #plt.savefig('player_count_history.png')
-            plt.savefig('/root/ChaoticBot/bot/cogs/tf2_player_count_history.png')
+            TF2_time_now = datetime.now()
+            TF2_graph_name = TF2_time_now.strftime("%m:%d:%Y-%H:%M:%S")
+            plt.savefig('/root/ChaoticBot/bot/cogs/TF2Graphs/' + TF2_graph_name + ".png")
             
-            tf2graph = discord.File("/root/ChaoticBot/bot/cogs/tf2_player_count_history.png", filename="tf2graph.png")
+            tf2graph = discord.File("/root/ChaoticBot/bot/cogs/TF2Graphs/" + TF2_graph_name + ".png", filename="tf2graph.png")
             newEmbedTF2.set_image(url="attachment://tf2graph.png")
  
                 
@@ -472,9 +476,11 @@ class status(commands.Cog):
         plt.plot(xpoints, ypoints)
         plt.grid()
         #plt.savefig('player_count_history.png')
-        plt.savefig('/root/ChaoticBot/bot/cogs/player_count_history.png')
+        TTT_time_now = datetime.now()
+        TTT_graph_name = TTT_time_now.strftime("%m:%d:%Y-%H:%M:%S")
+        plt.savefig('/root/ChaoticBot/bot/cogs/TTTGraphs/' + TTT_graph_name + ".png")
         
-        graph = discord.File("/root/ChaoticBot/bot/cogs/player_count_history.png", filename="graph.png")
+        graph = discord.File("/root/ChaoticBot/bot/cogs/TTTGraphs/" + TTT_graph_name + ".png", filename="graph.png")
         initEmbedTTT.set_image(url="attachment://graph.png")
     
         time_now = datetime.now()
@@ -561,9 +567,11 @@ class status(commands.Cog):
             plt.plot(xpoints, ypoints)
             plt.grid()
             #plt.savefig('player_count_history.png')
-            plt.savefig('/root/ChaoticBot/bot/cogs/player_count_history.png')
-            
-            graph = discord.File("/root/ChaoticBot/bot/cogs/player_count_history.png", filename="graph.png")
+            TTT_time_now = datetime.now()
+            TTT_graph_name = TTT_time_now.strftime("%m:%d:%Y-%H:%M:%S")
+            plt.savefig('/root/ChaoticBot/bot/cogs/TTTGraphs/' + TTT_graph_name + ".png")
+        
+            graph = discord.File("/root/ChaoticBot/bot/cogs/TTTGraphs/" + TTT_graph_name + ".png", filename="graph.png")
             newEmbedTTT.set_image(url="attachment://graph.png")
  
                 
@@ -576,32 +584,64 @@ class status(commands.Cog):
         except:
             pass
 
-    
-    @tasks.loop(minutes=1.0)
-    async def selfMC(self):
+   
+    @commands.command()
+    @only_these_users(736309573924683917,290926756397842432)
+    async def initMC(self, ctx):
         await self.client.wait_until_ready()
-        mcmessage = await self.client.get_channel(channelID).fetch_message(messageID)
-       
-        newEmbedMC = discord.Embed(title="**ChaoticCove**", color = ecolor)
+        initEmbedMC = discord.Embed(title="**ChaoticCove**", color = ecolor)
         mc_status = mc_server.status()
-        newEmbedMC.set_thumbnail(url="https://i.imgur.com/8fDbAlM.png")
+        initEmbedMC.set_thumbnail(url="https://i.imgur.com/8fDbAlM.png")
         mc_player_count = mc_status.players.online
-        newEmbedMC.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
+        initEmbedMC.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
         mc_latency = mc_status.latency
-        newEmbedMC.add_field(name="**Latency**", value = f"{mc_latency}")
-        newEmbedMC.add_field(name="**IP**", value = "158.62.204.28")
+        initEmbedMC.add_field(name="**Latency**", value = f"{mc_latency}")
+        initEmbedMC.add_field(name="**IP**", value = "158.62.204.28")
         if mc_player_count == 0:
-            newEmbedMC.add_field(name="**Online Players:**", value ="No one is online.")
+            initEmbedMC.add_field(name="**Online Players:**", value ="No one is online.")
         if mc_player_count > 0:
             mc_query = mc_server.query() 
             #mc_players = '\n'.join(mc_query.players.names)
-            newEmbedMC.add_field(name="**Online Players:**", value = "__{0}__".format("\n".join(mc_query.players.names)))
+            initEmbedMC.add_field(name="**Online Players:**", value = "__{0}__".format("\n".join(mc_query.players.names)))
         time_now = datetime.now()
-        time_formatted = time_now.strftime("%d/%m/%Y %H:%M:%S")
-        newEmbedMC.set_footer(text=f"Last Updated: {time_formatted}")
+        time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+        initEmbedMC.set_footer(text=f"Last Updated: {time_formatted}")
         
-        await mcmessage.edit(embed = newEmbedMC)
- 
+        mcmessage = await ctx.send(embed=initEmbedMC)
+        
+        try:
+            self.selfMC.start(mcmessage)
+        except RuntimeError:
+            mcmessage.delete()
+            await ctx.send(f"{ctx.author.mention}, MC status is already running elsewhere (if this is not the case, contact Joker).")
+
+
+    @tasks.loop(minutes=1.0)
+    async def selfMC(self, msg):
+        try:
+            await self.client.wait_until_ready()
+            newEmbedMC = discord.Embed(title="**ChaoticCove**", color = ecolor)
+            mc_status = mc_server.status()
+            newEmbedMC.set_thumbnail(url="https://i.imgur.com/8fDbAlM.png")
+            mc_player_count = mc_status.players.online
+            newEmbedMC.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
+            mc_latency = mc_status.latency
+            newEmbedMC.add_field(name="**Latency**", value = f"{mc_latency}")
+            newEmbedMC.add_field(name="**IP**", value = "158.62.204.28")
+            if mc_player_count == 0:
+                newEmbedMC.add_field(name="**Online Players:**", value ="No one is online.")
+            if mc_player_count > 0:
+                mc_query = mc_server.query() 
+                #mc_players = '\n'.join(mc_query.players.names)
+                newEmbedMC.add_field(name="**Online Players:**", value = "__{0}__".format("\n".join(mc_query.players.names)))
+            time_now = datetime.now()
+            time_formatted = time_now.strftime("%m/%d/%Y %H:%M:%S")
+            newEmbedMC.set_footer(text=f"Last Updated: {time_formatted}")
+        
+            await msg.edit(embed = newEmbedMC)
+        
+        except:
+            pass
     # ----------------------------------
     
 
