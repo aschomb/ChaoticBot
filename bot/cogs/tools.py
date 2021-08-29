@@ -201,9 +201,12 @@ class tools(commands.Cog):
                   ("Bots", len(list(filter(lambda m: m.bot, ctx.guild.members))), True),
                   ("Statuses", f":green_circle: {statuses[0]} :orange_circle: {statuses[1]} :red_circle: {statuses[2]} :white_circle: {statuses[3]}", True),
                   ("\u200b", "\u200b", True)]
-
+        
         for name, value, inline in fields:
             em.add_field(name=name, value=value, inline=inline)
+
+        #for name, value, inline in fields:
+        #    em.add_field(name=name, value=value, inline=inline)
         
         #em = discord.Embed(title=f"**Server Information**", color=ecolor)
         #em.add_field(name="**Name**", value=f"{guild.name}", inline=True)

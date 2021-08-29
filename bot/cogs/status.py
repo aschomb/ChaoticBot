@@ -596,7 +596,7 @@ class status(commands.Cog):
         initEmbedMC.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
         mc_latency = mc_status.latency
         initEmbedMC.add_field(name="**Latency**", value = f"{mc_latency}")
-        initEmbedMC.add_field(name="**IP**", value = "158.62.204.28")
+        initEmbedMC.add_field(name="**IP**", value = "63.135.165.174")
         if mc_player_count == 0:
             initEmbedMC.add_field(name="**Online Players:**", value ="No one is online.")
         if mc_player_count > 0:
@@ -627,7 +627,7 @@ class status(commands.Cog):
             newEmbedMC.add_field(name="**Player Count**", value = f"{mc_player_count} players online")
             mc_latency = mc_status.latency
             newEmbedMC.add_field(name="**Latency**", value = f"{mc_latency}")
-            newEmbedMC.add_field(name="**IP**", value = "158.62.204.28")
+            newEmbedMC.add_field(name="**IP**", value = "63.135.165.174")
             if mc_player_count == 0:
                 newEmbedMC.add_field(name="**Online Players:**", value ="No one is online.")
             if mc_player_count > 0:
